@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import pageTtile from '../Page/pageTtile.vue';
-import DeleteIcon from '@mui/icons-material/Delete';
 
     let id = 0;
 
@@ -17,7 +16,6 @@ function removeTodo(todo) {
     todos.value = todos.value.filter((t) => t !== todo)
 }
 
-const checked = ref(true)
 </script>
 
 <template>
@@ -26,15 +24,17 @@ const checked = ref(true)
             <pageTtile msg="TodoList Vue"/>
         </div>
         <form @submit.prevent="addTodo">
-            <input v-model="newTodo">
+            <input v-model="newTodo" required>
             <button>Add Todo</button>
         </form>
-        <ul>
+        <div class="list"> 
             <li v-for="todo in todos" :key="todo.id">
-                {{ todo.text }}
-                <button @click="removeTodo(todo)">Delete</button>
+                <input class="checkbox" type="checkbox" v-model="todo.completed" />
+                <span :class="{ completed: todo.completed }">{{ todo.text }}</span>
+                
+                <button class="delete" @click="removeTodo(todo)">delete</button>
             </li>
-        </ul>
+        </div>
     </div>
 </template>
 
@@ -69,7 +69,7 @@ const checked = ref(true)
         text-transform: uppercase;
         font-weight: bold;
         border: 1px solid white;
-        margin-left: 5px;
+        margin-left: 1.5rem;
         cursor: pointer;
     }
 
@@ -78,6 +78,30 @@ const checked = ref(true)
         height:2rem;
     }
 
-    
-    
+    div .list {
+       display: flex;
+       align-items: flex-start;
+       flex-flow: column;
+    }
+
+    .checkbox {
+        margin-right: 8px;
+    }
+
+    li {
+        list-style: none;
+        color:hsla(160, 100%, 37%, 1);
+        padding: 10px;
+        border: 1px solid hsla(160, 100%, 37%, 1);
+        /* min-width: 25rem; */
+    }
+    .completed {
+        text-decoration: line-through;
+    }
+
+    button.delete {
+        margin-left: 8px;
+        cursor: pointer;
+    }
+
 </style>
